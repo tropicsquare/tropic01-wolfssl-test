@@ -1,5 +1,8 @@
+#Define the compiler if necessry (f.i. for cross-compilation)
 #CC = gcc
-LIBTROPIC_DIR = /home/skyworker/git/libtropic
+
+# Replace with correct path to libtropic! 
+LIBTROPIC_DIR = /home/pi/libtropic
 
 
 SRCS = main.c
@@ -23,18 +26,20 @@ ifdef RPI_SPI
 SRCS += $(LIBTROPIC_DIR)/hal/port/unix/lt_port_raspberrypi_wiringpi.c
 LDFLAGS += -lwiringPi
 else
-SRCS += $(LIBTROPIC_DIR)/hal/port/unix/lt_port_unix.c
+SRCS += $(LIBTROPIC_DIR)/hal/port/unix/lt_port_unix_usb_dongle.c
 endif
 
 OBJS = $(SRCS:.c=.o)
 
 all: lt-wolfssl-test
 
+
+$(OBJS): %.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 lt-wolfssl-test: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f lt-wolfssl-test $(OBJS)
