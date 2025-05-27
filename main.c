@@ -46,7 +46,7 @@ int test_ed25519_key_generation(WC_RNG* rng)
     printf("✓ Ed25519 key structure initialized successfully\n");
     
     /* Generate Ed25519 key pair */
-    ret = wc_ed25519_make_key(rng, ED25519_KEY_SIZE, &key);
+    ret = wc_ed25519_make_key(rng, ED25519_KEY_SIZE, &key); //ToDo
     if (ret != 0) {
         printf("ERROR: wc_ed25519_make_key failed with code %d\n", ret);
         wc_ed25519_free(&key);
@@ -92,15 +92,7 @@ int test_ed25519_sign_message(WC_RNG* rng)
     }
     key.devId = WOLF_TROPIC01_DEVID;
     printf("DEV_ID: %d\n", key.devId);
-    /* Generate key pair */
-    ret = wc_ed25519_make_key(rng, ED25519_KEY_SIZE, &key);
-    if (ret != 0) {
-        printf("ERROR: wc_ed25519_make_key failed with code %d\n", ret);
-        wc_ed25519_free(&key);
-        return ret;
-    }
-    printf("✓ Key pair generated for signing test\n");
-    printf("DEV_ID: %d\n", key.devId);
+    
     /* Generate test message */
     ret = wc_RNG_GenerateBlock(rng, message, TEST_MESSAGE_SIZE);
     if (ret != 0) {
@@ -111,7 +103,7 @@ int test_ed25519_sign_message(WC_RNG* rng)
     print_hex_buffer("Test Message", message, TEST_MESSAGE_SIZE);
     
     /* Sign the message */
-    printf("DEV_ID: %d\n", key.devId);
+    //printf("DEV_ID: %d\n", key.devId);
     ret = wc_ed25519_sign_msg(message, TEST_MESSAGE_SIZE, signature, &sigLen, &key);
     if (ret != 0) {
         printf("ERROR: wc_ed25519_sign_msg failed with code %d\n", ret);
@@ -151,15 +143,8 @@ int test_ed25519_verify_message(WC_RNG* rng)
         return ret;
     }
     
-    /* Generate key pair */
-    ret = wc_ed25519_make_key(rng, ED25519_KEY_SIZE, &key);
-    if (ret != 0) {
-        printf("ERROR: wc_ed25519_make_key failed with code %d\n", ret);
-        wc_ed25519_free(&key);
-        return ret;
-    }
-    printf("✓ Key pair generated for verification test\n");
-    
+    key.devId = WOLF_TROPIC01_DEVID;
+    printf("DEV_ID: %d\n", key.devId);
     /* Generate and sign test message */
     ret = wc_RNG_GenerateBlock(rng, message, TEST_MESSAGE_SIZE);
     if (ret != 0) {
@@ -258,7 +243,7 @@ int main(void)
                                     0x09, 0x0A, 0x0B, 0x0C,
                                     0x0D, 0x0E, 0x0F, 0x10}; // Example plaintext message
     byte cipher[WC_AES_BLOCK_SIZE]; // Buffer for ciphertext
-    byte plain[WC_AES_BLOCK_SIZE]; // Buffer for decrypted plaintext
+   // byte plain[WC_AES_BLOCK_SIZE]; // Buffer for decrypted plaintext
     byte output[RNG_SIZE];
 
     printf("wolfSSL Crypto Callback Test Application\n");
@@ -324,7 +309,16 @@ int main(void)
         wc_FreeRng(&rng);
         return EXIT_FAILURE;
     }
-    printf("AES test completed successfully\n");
+    printf("Plain message:\n");
+    for (int i = 0; i < WC_AES_BLOCK_SIZE; i++) {
+        printf("%02X ", msg[i]);
+    }
+    printf("\nEncrypted message:\n");
+    for (int i = 0; i < WC_AES_BLOCK_SIZE; i++) {
+        printf("%02X ", cipher[i]);
+    }
+    
+    printf("\nAES test completed successfully\n");
 
     
     /* Run Ed25519 Tests */
