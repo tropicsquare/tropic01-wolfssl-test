@@ -2,7 +2,7 @@
 #CC = gcc
 
 # Replace with correct path to libtropic! 
-LIBTROPIC_DIR = /home/pi/libtropic
+LIBTROPIC_DIR = /home/skyworker/Work/libtropic
 
 
 SRCS = main.c
