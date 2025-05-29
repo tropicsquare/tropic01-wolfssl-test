@@ -1,8 +1,8 @@
-#Define the compiler if necessry (f.i. for cross-compilation)
-#CC = gcc
+#Define the compiler if necessary (f.i, for cross-compilation)
+CC = gcc
 
 # Replace with correct path to libtropic! 
-LIBTROPIC_DIR = /home/skyworker/Work/libtropic
+LIBTROPIC_DIR = /home/pi/libtropic
 
 
 SRCS = main.c
