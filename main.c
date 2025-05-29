@@ -25,6 +25,29 @@ int test_ed25519_sign_message(WC_RNG* rng);
 int test_ed25519_verify_message(WC_RNG* rng);
 void print_hex_buffer(const char* label, const byte* buffer, word32 size);
 
+/* Default factory pairing keys for engineering samples (to be replaced with project keys)*/
+static byte g_pkey_index =  PAIRING_KEY_SLOT_INDEX_0;
+static byte g_sh0priv[] = {0xd0,0x99,0x92,0xb1,0xf1,0x7a,0xbc,0x4d,0xb9,0x37,0x17,0x68,0xa2,0x7d,0xa0,0x5b,0x18,0xfa,0xb8,0x56,0x13,0xa7,0x84,0x2c,0xa6,0x4c,0x79,0x10,0xf2,0x2e,0x71,0x6b};
+static byte g_sh0pub[]  = {0xe7,0xf7,0x35,0xba,0x19,0xa3,0x3f,0xd6,0x73,0x23,0xab,0x37,0x26,0x2d,0xe5,0x36,0x08,0xca,0x57,0x85,0x76,0x53,0x43,0x52,0xe1,0x8f,0x64,0xe6,0x13,0xd3,0x8d,0x54};
+
+
+/* Test keys and messages */
+static byte aes_key[WC_AES_BLOCK_SIZE] = {0x00, 0x01, 0x02, 0x03, 
+                                    0x04, 0x05, 0x06, 0x07,
+                                    0x08, 0x09, 0x0A, 0x0B,
+                                    0x0C, 0x0D, 0x0E, 0x0F}; // Example AES key
+static byte iv[WC_AES_BLOCK_SIZE] = {0x00, 0x01, 0x02, 0x03,   
+                                0x04, 0x05, 0x06, 0x07,
+                                0x08, 0x09, 0x0A, 0x0B,
+                                0x0C, 0x0D, 0x0E, 0x0F}; // Example IV
+static byte msg[WC_AES_BLOCK_SIZE] = {0x01, 0x02, 0x03, 0x04, 
+                                0x05, 0x06, 0x07, 0x08,
+                                0x09, 0x0A, 0x0B, 0x0C,
+                                0x0D, 0x0E, 0x0F, 0x10}; // Example plaintext message
+static byte cipher[WC_AES_BLOCK_SIZE]; // Buffer for ciphertext
+// byte plain[WC_AES_BLOCK_SIZE]; // Buffer for decrypted plaintext
+static byte output[RNG_SIZE];
+
 /**
  * Test Ed25519 key generation functionality
  */
@@ -46,7 +69,7 @@ int test_ed25519_key_generation(WC_RNG* rng)
     printf("✓ Ed25519 key structure initialized successfully\n");
     
     /* Generate Ed25519 key pair */
-    ret = wc_ed25519_make_key(rng, ED25519_KEY_SIZE, &key); //ToDo
+    ret = wc_ed25519_make_key(rng, ED25519_KEY_SIZE, &key); //To Do 
     if (ret != 0) {
         printf("ERROR: wc_ed25519_make_key failed with code %d\n", ret);
         wc_ed25519_free(&key);
@@ -80,7 +103,6 @@ int test_ed25519_sign_message(WC_RNG* rng)
     byte signature[ED25519_SIG_SIZE];
     word32 sigLen = ED25519_SIG_SIZE;
     
-
 
     printf("\n=== Ed25519 Message Signing Test ===\n");
     
@@ -230,26 +252,18 @@ int main(void)
     int ret;
     WC_RNG rng;
     Aes aes[1]; // Array to hold AES context
-    byte aes_key[WC_AES_BLOCK_SIZE] = {0x00, 0x01, 0x02, 0x03, 
-                                        0x04, 0x05, 0x06, 0x07,
-                                        0x08, 0x09, 0x0A, 0x0B,
-                                        0x0C, 0x0D, 0x0E, 0x0F}; // Example AES key
-    byte iv[WC_AES_BLOCK_SIZE] = {0x00, 0x01, 0x02, 0x03,   
-                                  0x04, 0x05, 0x06, 0x07,
-                                  0x08, 0x09, 0x0A, 0x0B,
-                                  0x0C, 0x0D, 0x0E, 0x0F}; // Example IV
-    byte msg[WC_AES_BLOCK_SIZE] = {0x01, 0x02, 0x03, 0x04, 
-                                    0x05, 0x06, 0x07, 0x08,
-                                    0x09, 0x0A, 0x0B, 0x0C,
-                                    0x0D, 0x0E, 0x0F, 0x10}; // Example plaintext message
-    byte cipher[WC_AES_BLOCK_SIZE]; // Buffer for ciphertext
-   // byte plain[WC_AES_BLOCK_SIZE]; // Buffer for decrypted plaintext
-    byte output[RNG_SIZE];
+    
 
     printf("wolfSSL Crypto Callback Test Application\n");
     printf("========================================\n");
     
     wolfSSL_Debugging_ON(); 
+
+    ret = Tropic01_SetPairingKeys(g_pkey_index, g_sh0pub, g_sh0priv);
+    if (ret != 0) {
+        printf("Failed to set pairing keys: %d\n", ret);
+        return EXIT_FAILURE;
+    }
     
     /* wolfCrypt initialization */
     if ((ret = wolfCrypt_Init()) != 0) {
@@ -260,8 +274,8 @@ int main(void)
     }
     printf("wolfCrypt initialized successfully\n");
 
-    /* Register our crypto callback */
-    printf("Registering crypto callback with device ID %d...\n", 
+    /* Register TROPIC01 crypto callback */
+    printf("Registering crypto callback with device ID %06X...\n", 
            WOLF_TROPIC01_DEVID);
     ret = wc_CryptoCb_RegisterDevice(WOLF_TROPIC01_DEVID, Tropic01_CryptoCb, NULL);
     if (ret != 0) {
@@ -323,7 +337,7 @@ int main(void)
     
     /* Run Ed25519 Tests */
     
-    printf("\nED25519 COMPREHENSIVE TESTING SUITE\n");
+    printf("\nED25519 TESTING SUITE\n");
     
     
      /* Test 1: Key Generation */
