@@ -19,6 +19,7 @@ Integration guide for using Tropic Square's TROPIC01 secure element with wolfSSL
     - [Build TROPIC01 SDK (libtropic)](#build-tropic01-sdk-libtropic)
     - [Build wolfSSL](#build-wolfssl)
     - [Build test application](#build-test-application)
+  - [License] (#license)
 
 ## TROPIC01 Secure Element with an open architecture
 
@@ -226,6 +227,12 @@ A73A562B 3D03F429 8706309D 63E2120B
 ✓ Ed25519 message signing test completed successfully
 wolfSSL Entering wolfCrypt_Cleanup
 ```
+## License
+
+This project is licensed under the GNU General Public License version 2 (GPLv2).  
+See the [LICENSE](https://github.com/tropicsquare/tropic01-wolfssl-test/blob/main/LICENSE) file for the full license text.
+
+
 
  
  
