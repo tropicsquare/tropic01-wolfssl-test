@@ -81,7 +81,8 @@ $ sudo apt install wiringpi
 
 For the integration with wolfSSL, there are a few pre-defined slots for the secure keys storage (the slots mapping might be changed in tropic01.h):
 ```sh
-TROPIC01_AES_RMEM_SLOT_DEFAULT 1 // slot in R-memory for AES key
+TROPIC01_AES_KEY_RMEM_SLOT 0 // slot in R-memory for AES key
+TROPIC01_AES_IV_RMEM_SLOT 1 // slot in R-memory for AES IV
 TROPIC01_ED25519_PUB_RMEM_SLOT_DEFAULT 2 // slot in R-memory for ED25519 Public key
 TROPIC01_ED25519_PRIV_RMEM_SLOT_DEFAULT 3 //slot in R-memory for ED25519 Private key
 TROPIC01_ED25519_ECC_SLOT_DEFAULT 1 // slot in ECC keys storage for both public and private keys
@@ -107,7 +108,7 @@ Or run the following commands:
 ### Build wolfSSL
 1. Clone wolfSSL from the wolfSSL GitHub (n/a yet)
 
-(temporarily solution until the PR is accepted to clone from [this fork](https://github.com/kosmax871/wolfssl.git) and checkout tropic01-dev branch)
+(temporarily solution until the official PR is accepted is to clone from [this fork](https://github.com/kosmax871/wolfssl.git) and checkout tropic01-dev branch)
 
 1. Make sure that the version of wolfSSL supports TROPIC01 - check if the folder wolfssl/wolfcrypt/src/port/tropicsquare exists
 
