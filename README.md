@@ -243,4 +243,8 @@ This project uses the following external components licensed under GPLv2:
 - **wolfSSL/wolfssl**  – [https://github.com/wolfSSL/wolfssl]
 
 
+This project uses the following external components licensed under BSD-3-Clause-Clear license:
+
+- **tropicsquare/libtropic**  – [https://github.com/tropicsquare/libtropic]
+
 
