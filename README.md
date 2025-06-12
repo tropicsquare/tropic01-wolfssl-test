@@ -232,6 +232,11 @@ wolfSSL Entering wolfCrypt_Cleanup
 This project is licensed under the GNU General Public License version 2 (GPLv2).  
 See the [LICENSE](https://github.com/tropicsquare/tropic01-wolfssl-test/blob/main/LICENSE) file for the full license text.
 
+## Dependencies
+
+This project uses the following external components licensed under GPLv2:
+
+- **wolfssl**  – [https://github.com/wolfSSL/wolfssl]
 
 
  
