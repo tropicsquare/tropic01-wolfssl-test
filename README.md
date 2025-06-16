@@ -25,7 +25,7 @@ Integration guide for using Tropic Square's TROPIC01 secure element with wolfSSL
 ## TROPIC01 Secure Element with an open architecture
 
 The TROPIC01 secure element is built with tamper-proof technology and advanced attack countermeasures to ensure robust asset protection, securing electronic devices against a wide range of potential attacks. It securely supplies and stores the cryptographic keys of embedded solutions.
-The TROPIC01 datasheet is available via [this link](https://www.nxp.com/docs/en/application-note/AN12570.pdf)
+The TROPIC01 datasheet is available via [this link](https://github.com/tropicsquare/tropic01/blob/main/doc/datasheet/ODD_tropic01_datasheet_revA6.pdf)
 
 ## Hardware Overview
 
